@@ -14,6 +14,10 @@ variable "ecr_repo_name" {
   type        = string
   description = "The name of the ECR repository that contains the image for the lambda functions."
 }
+variable "image_tag" {
+  type = string
+  description = "The image tag for the Docker images (the timestamp)."
+}
 variable "lambda_role_arn" {
   type        = string
   description = "The ARN of the Lambda Role to be attached to the Lambda function."
