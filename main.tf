@@ -77,6 +77,7 @@ module "api-endpoint" {
   app_name        = var.app_name
   url             = var.url
   ecr_repo_name   = var.ecr_repo_name
+  image_tag       = var.image_tag
   lambda_role_arn = aws_iam_role.lambda_role.arn
 
   path_part       = each.value.path_part
