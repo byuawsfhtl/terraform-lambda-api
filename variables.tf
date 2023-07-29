@@ -23,9 +23,10 @@ variable "ecr_repo_name" {
   description = "The name of the ECR repository that contains the image for the lambda functions."
 }
 variable "image_tag" {
-  type = string
-  description = "The image tag for the Docker images (the timestamp)."
+  type        = string
+  description = "The image tag for the Docker image (the timestamp)."
 }
+
 
 variable "lambda_function_definitions" {
   type = list(object({
