@@ -19,7 +19,10 @@ variable "api_url" {
   description = "The custom url for your api. Ex: api.projectname.rll-dev.byu.edu"
 }
 variable "ecr_repo" {
-  type        = string
+  type = object({
+    name           = string,
+    repository_url = string
+  })
   description = "The ECR repository that contains the image for the lambda functions."
 }
 variable "image_tag" {
