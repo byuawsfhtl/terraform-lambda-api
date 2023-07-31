@@ -1,15 +1,10 @@
 # ========== Lambda ==========
-# ----- Data -----
-data "aws_ecr_repository" "ecr_repo" {
-  name = var.ecr_repo_name
-}
-
 # ----- Function -----
 resource "aws_lambda_function" "lambda_function" {
   function_name = "${var.app_name}_${var.path_part}_${var.http_method}"
   role          = var.lambda_role_arn
   package_type  = "Image"
-  image_uri     = "${data.aws_ecr_repository.ecr_repo.repository_url}:${var.app_name}-${var.image_tag}"
+  image_uri     = "${var.ecr_repo.repository_url}:${var.app_name}-${var.image_tag}"
   timeout       = var.timeout
   image_config {
     command = var.command

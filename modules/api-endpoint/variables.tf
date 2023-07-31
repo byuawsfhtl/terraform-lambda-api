@@ -10,9 +10,9 @@ variable "url" {
   type        = string
   description = "The url of the application. Ex: projectname.rll.byu.edu"
 }
-variable "ecr_repo_name" {
+variable "ecr_repo" {
   type        = string
-  description = "The name of the ECR repository that contains the image for the lambda functions."
+  description = "The ECR repository that contains the image for the lambda functions."
 }
 variable "image_tag" {
   type        = string
