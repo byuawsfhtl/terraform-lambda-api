@@ -1,3 +1,13 @@
+locals {
+  method_map = {
+    for def in var.lambda_function_definitions : "${var.app_name}_${def.path_part}_${def.http_method}" => {
+      http_method     = def.http_method
+      command         = def.command
+      timeout         = def.timeout
+    }
+  }
+}
+
 # ========== Lambda ==========
 # ----- Function -----
 resource "aws_lambda_function" "lambda_function" {
