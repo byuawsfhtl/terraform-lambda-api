@@ -1,23 +1,11 @@
-# ========== Lambda ==========
-# ----- Function -----
-resource "aws_lambda_function" "lambda_function" {
-  function_name = "${var.app_name}_${var.path_part}_${var.http_method}"
-  role          = var.lambda_role_arn
-  package_type  = "Image"
-  image_uri     = "${var.ecr_repo.repository_url}:${var.app_name}-${var.image_tag}"
-  timeout       = var.timeout
-  image_config {
-    command = var.command
+locals {
+  method_map = {
+    for def in var.method_definitions : "${var.app_name}_${var.path_part}_${def.http_method}" => {
+      http_method = def.http_method
+      command     = def.command
+      timeout     = def.timeout
+    }
   }
-}
-
-resource "aws_lambda_permission" "lambda-permission" {
-  statement_id  = "Allow${var.api_gateway_name}APIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda_function.function_name
-  principal     = "apigateway.amazonaws.com"
-
-  source_arn = "${data.aws_api_gateway_rest_api.api_gateway.execution_arn}/*"
 }
 
 # ========== API Gateway ==========
@@ -33,21 +21,24 @@ resource "aws_api_gateway_resource" "api_resource" {
   path_part   = var.path_part
 }
 
-# ----- Method -----
-resource "aws_api_gateway_method" "api_method" {
-  rest_api_id   = data.aws_api_gateway_rest_api.api_gateway.id
-  resource_id   = aws_api_gateway_resource.api_resource.id
-  http_method   = var.http_method
-  authorization = "NONE"
-}
+# ----- Methods -----
+module "endpoint_methods" {
+  source = "./endpoint_methods/"
 
-resource "aws_api_gateway_integration" "api_integration" {
-  rest_api_id             = data.aws_api_gateway_rest_api.api_gateway.id
-  resource_id             = aws_api_gateway_resource.api_resource.id
-  http_method             = aws_api_gateway_method.api_method.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.lambda_function.invoke_arn
+  for_each = local.method_map
+
+  app_name        = var.app_name
+  ecr_repo        = var.ecr_repo
+  image_tag       = var.image_tag
+  lambda_role_arn = var.lambda_role.arn
+  path_part       = var.path_part
+
+  http_method = each.value.http_method
+  command     = each.value.command
+  timeout     = each.value.timeout
+
+  api_gateway_name = var.api_gateway.name
+  api_resource_id  = aws_api_gateway_resource.api_resource.id
 }
 
 # ----- Options Method -----
@@ -98,10 +89,4 @@ resource "aws_api_gateway_method_response" "api_options_method_response" {
     "method.response.header.Access-Control-Allow-Methods" = true,
     "method.response.header.Access-Control-Allow-Origin"  = true
   }
-}
-
-# ========== Cloudwatch ==========
-resource "aws_cloudwatch_log_group" "LambdaFunctionLogGroup" {
-  name              = "/aws/lambda/${aws_lambda_function.lambda_function.function_name}"
-  retention_in_days = 7
 }
