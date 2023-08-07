@@ -23,15 +23,15 @@ variable "path_part" {
 }
 
 variable "http_method" {
-  type        = list(string)
+  type        = string
   description = "The HTTP methods for the endpoint."
 }
 variable "command" {
-  type        = list(list(string))
+  type        = list(string)
   description = "The lambda handlers for each method of the endpoint. The syntax is file_name.function_name"
 }
 variable "timeout" {
-  type        = list(number)
+  type        = number
   description = "Amount of time your Lambda Function has to run in seconds."
 }
 
