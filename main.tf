@@ -1,6 +1,6 @@
 locals {
   endpoint_map = {
-    for def in var.lambda_function_definitions : "${var.app_name}_${def.path_part}" => {
+    for def in var.lambda_endpoint_definitions : "${var.app_name}_${def.path_part}" => {
       path_part          = def.path_part
       allowed_headers    = def.allowed_headers
       method_definitions = def.method_definitions

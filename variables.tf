@@ -31,7 +31,7 @@ variable "image_tag" {
 }
 
 
-variable "lambda_function_definitions" {
+variable "lambda_endpoint_definitions" {
   type = list(object({
     path_part       = string
     allowed_headers = optional(string)
