@@ -40,6 +40,6 @@ variable "api_gateway_name" {
   description = "The name of the API Gateway."
 }
 variable "api_resource_id" {
-  type = string
+  type        = string
   description = "The ID for the API Resource for this endpoint."
 }

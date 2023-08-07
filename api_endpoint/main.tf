@@ -1,9 +1,9 @@
 locals {
   method_map = {
     for def in var.method_definitions : "${var.app_name}_${var.path_part}_${def.http_method}" => {
-      http_method     = def.http_method
-      command         = def.command
-      timeout         = def.timeout
+      http_method = def.http_method
+      command     = def.command
+      timeout     = def.timeout
     }
   }
 }
@@ -23,7 +23,7 @@ resource "aws_api_gateway_resource" "api_resource" {
 
 # ----- Methods -----
 module "endpoint_methods" {
-  source     = "./endpoint_methods/"
+  source = "./endpoint_methods/"
 
   for_each = local.method_map
 
@@ -33,12 +33,12 @@ module "endpoint_methods" {
   lambda_role_arn = var.lambda_role.arn
   path_part       = var.path_part
 
-  http_method     = each.value.http_method
-  command         = each.value.command
-  timeout         = each.value.timeout
+  http_method = each.value.http_method
+  command     = each.value.command
+  timeout     = each.value.timeout
 
   api_gateway_name = var.api_gateway.name
-  api_resource_id = aws_api_gateway_resource.api_resource.id
+  api_resource_id  = aws_api_gateway_resource.api_resource.id
 }
 
 # ----- Options Method -----

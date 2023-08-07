@@ -37,9 +37,9 @@ variable "lambda_function_definitions" {
     allowed_headers = optional(string)
 
     method_definitions = list(object({
-      http_method     = string
-      command         = list(string)
-      timeout         = optional(number)
+      http_method = string
+      command     = list(string)
+      timeout     = optional(number)
     }))
   }))
   description = "The definitions for each lambda function."
