@@ -6,6 +6,9 @@ locals {
       timeout     = def.timeout
     }
   }
+
+  http_methods        = [for def in var.method_definitions : def.http_method]
+  http_methods_string = join(",", local.http_methods)
 }
 
 # ========== API Gateway ==========
@@ -30,14 +33,14 @@ module "endpoint_methods" {
   app_name        = var.app_name
   ecr_repo        = var.ecr_repo
   image_tag       = var.image_tag
-  lambda_role_arn = var.lambda_role.arn
+  lambda_role_arn = var.lambda_role_arn
   path_part       = var.path_part
 
   http_method = each.value.http_method
   command     = each.value.command
   timeout     = each.value.timeout
 
-  api_gateway_name = var.api_gateway.name
+  api_gateway_name = var.api_gateway_name
   api_resource_id  = aws_api_gateway_resource.api_resource.id
 }
 
@@ -71,7 +74,7 @@ resource "aws_api_gateway_integration_response" "api_options_integration_respons
   status_code = aws_api_gateway_method_response.api_options_method_response.status_code
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = var.allowed_headers != null ? "'Content-Type,${var.allowed_headers}'" : "'Content-Type'",
-    "method.response.header.Access-Control-Allow-Methods" = "'${var.http_method},OPTIONS'",
+    "method.response.header.Access-Control-Allow-Methods" = "'${local.http_methods_string},OPTIONS'",
     "method.response.header.Access-Control-Allow-Origin"  = "'https://${var.url}'",
   }
 }
