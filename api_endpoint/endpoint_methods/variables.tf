@@ -2,16 +2,6 @@ variable "app_name" {
   type        = string
   description = "The name of the project in kebab-case."
 }
-
-variable "api_gateway_name" {
-  type        = string
-  description = "The name of the API Gateway."
-}
-variable "path_part" {
-  type        = string
-  description = "The URL path to invoke the method."
-}
-
 variable "ecr_repo" {
   type = object({
     name           = string,
@@ -27,6 +17,10 @@ variable "lambda_role_arn" {
   type        = string
   description = "The ARN of the Lambda Role to be attached to the Lambda function."
 }
+variable "path_part" {
+  type        = string
+  description = "The URL path to invoke the method."
+}
 
 variable "http_method" {
   type        = list(string)
@@ -41,6 +35,10 @@ variable "timeout" {
   description = "Amount of time your Lambda Function has to run in seconds."
 }
 
+variable "api_gateway_name" {
+  type        = string
+  description = "The name of the API Gateway."
+}
 variable "api_resource_id" {
   type = string
   description = "The ID for the API Resource for this endpoint."

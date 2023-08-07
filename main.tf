@@ -1,11 +1,9 @@
 locals {
-  function_map = {
-    for def in var.lambda_function_definitions : "${var.app_name}_${def.path_part}_${def.http_method}" => {
+  endpoint_map = {
+    for def in var.lambda_function_definitions : "${var.app_name}_${def.path_part}" => {
       path_part       = def.path_part
-      http_method     = def.http_method
-      command         = def.command
       allowed_headers = def.allowed_headers
-      timeout         = def.timeout
+      method_definitions = def.method_definitions
     }
   }
 }
@@ -67,30 +65,26 @@ resource "aws_api_gateway_rest_api" "api_gateway" {
   name = var.project_name
 }
 
-module "api-endpoint" {
-  source     = "./modules/api-endpoint/"
-  depends_on = [aws_api_gateway_rest_api.api_gateway]
+module "api_endpoint" {
+  source     = "./api_endpoint/"
 
-  for_each = local.function_map
+  for_each = local.endpoint_map
 
-  project_name    = var.project_name
   app_name        = var.app_name
   url             = var.url
   ecr_repo        = var.ecr_repo
   image_tag       = var.image_tag
   lambda_role_arn = aws_iam_role.lambda_role.arn
 
-  path_part       = each.value.path_part
-  http_method     = each.value.http_method
-  command         = each.value.command
-  allowed_headers = each.value.allowed_headers
-  timeout         = each.value.timeout
+  path_part          = each.value.path_part
+  allowed_headers    = each.value.allowed_headers
+  method_definitions = each.value.method_definitions
 
   api_gateway_name = aws_api_gateway_rest_api.api_gateway.name
 }
 
 resource "aws_api_gateway_deployment" "api_gateway_deployment" {
-  depends_on = [module.api-endpoint]
+  depends_on = [module.api_endpoint]
 
   rest_api_id = aws_api_gateway_rest_api.api_gateway.id
   stage_name  = "${var.app_name}-stage"
