@@ -39,8 +39,13 @@ variable "method_definitions" {
   description = "The definitions for each method of the endpoint."
 }
 
-variable "api_gateway_name" {
-  type        = string
-  description = "The name of the API Gateway."
+variable "api_gateway" {
+  type = object({
+    name             = string
+    id               = string
+    root_resource_id = string
+    execution_arn    = string
+  })
+  description = "The API Gateway for the enpoints."
 }
 

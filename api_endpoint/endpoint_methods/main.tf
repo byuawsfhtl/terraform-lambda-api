@@ -12,29 +12,25 @@ resource "aws_lambda_function" "lambda_function" {
 }
 
 resource "aws_lambda_permission" "lambda-permission" {
-  statement_id  = "Allow${var.api_gateway_name}APIGatewayInvoke"
+  statement_id  = "Allow${var.api_gateway.name}APIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_function.function_name
   principal     = "apigateway.amazonaws.com"
 
-  source_arn = "${data.aws_api_gateway_rest_api.api_gateway.execution_arn}/*"
+  source_arn = "${var.api_gateway.execution_arn}/*"
 }
 
 # ========== API Gateway ==========
-data "aws_api_gateway_rest_api" "api_gateway" {
-  name = var.api_gateway_name
-}
-
 # ----- Method -----
 resource "aws_api_gateway_method" "api_method" {
-  rest_api_id   = data.aws_api_gateway_rest_api.api_gateway.id
+  rest_api_id   = var.api_gateway.id
   resource_id   = var.api_resource_id
   http_method   = var.http_method
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_integration" "api_integration" {
-  rest_api_id             = data.aws_api_gateway_rest_api.api_gateway.id
+  rest_api_id             = var.api_gateway.id
   resource_id             = var.api_resource_id
   http_method             = aws_api_gateway_method.api_method.http_method
   integration_http_method = "POST"

@@ -80,7 +80,7 @@ module "api_endpoint" {
   allowed_headers    = each.value.allowed_headers
   method_definitions = each.value.method_definitions
 
-  api_gateway_name = aws_api_gateway_rest_api.api_gateway.name
+  api_gateway = aws_api_gateway_rest_api.api_gateway
 }
 
 resource "aws_api_gateway_deployment" "api_gateway_deployment" {

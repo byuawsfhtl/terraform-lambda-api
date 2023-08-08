@@ -35,9 +35,14 @@ variable "timeout" {
   description = "Amount of time your Lambda Function has to run in seconds."
 }
 
-variable "api_gateway_name" {
-  type        = string
-  description = "The name of the API Gateway."
+variable "api_gateway" {
+  type = object({
+    name             = string
+    id               = string
+    root_resource_id = string
+    execution_arn    = string
+  })
+  description = "The API Gateway for the enpoints."
 }
 variable "api_resource_id" {
   type        = string

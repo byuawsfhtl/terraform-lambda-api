@@ -12,15 +12,10 @@ locals {
 }
 
 # ========== API Gateway ==========
-# ----- Data -----
-data "aws_api_gateway_rest_api" "api_gateway" {
-  name = var.api_gateway_name
-}
-
 # ----- Endpoint -----
 resource "aws_api_gateway_resource" "api_resource" {
-  rest_api_id = data.aws_api_gateway_rest_api.api_gateway.id
-  parent_id   = data.aws_api_gateway_rest_api.api_gateway.root_resource_id
+  rest_api_id = var.api_gateway.id
+  parent_id   = var.api_gateway.root_resource_id
   path_part   = var.path_part
 }
 
@@ -40,20 +35,20 @@ module "endpoint_methods" {
   command     = each.value.command
   timeout     = each.value.timeout
 
-  api_gateway_name = var.api_gateway_name
-  api_resource_id  = aws_api_gateway_resource.api_resource.id
+  api_gateway     = var.api_gateway
+  api_resource_id = aws_api_gateway_resource.api_resource.id
 }
 
 # ----- Options Method -----
 resource "aws_api_gateway_method" "api_options_method" {
-  rest_api_id   = data.aws_api_gateway_rest_api.api_gateway.id
+  rest_api_id   = var.api_gateway.id
   resource_id   = aws_api_gateway_resource.api_resource.id
   http_method   = "OPTIONS"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_integration" "api_options_integration" {
-  rest_api_id = data.aws_api_gateway_rest_api.api_gateway.id
+  rest_api_id = var.api_gateway.id
   resource_id = aws_api_gateway_resource.api_resource.id
   http_method = aws_api_gateway_method.api_options_method.http_method
   type        = "MOCK"
@@ -68,7 +63,7 @@ resource "aws_api_gateway_integration" "api_options_integration" {
 }
 
 resource "aws_api_gateway_integration_response" "api_options_integration_response" {
-  rest_api_id = data.aws_api_gateway_rest_api.api_gateway.id
+  rest_api_id = var.api_gateway.id
   resource_id = aws_api_gateway_resource.api_resource.id
   http_method = aws_api_gateway_method.api_options_method.http_method
   status_code = aws_api_gateway_method_response.api_options_method_response.status_code
@@ -80,7 +75,7 @@ resource "aws_api_gateway_integration_response" "api_options_integration_respons
 }
 
 resource "aws_api_gateway_method_response" "api_options_method_response" {
-  rest_api_id = data.aws_api_gateway_rest_api.api_gateway.id
+  rest_api_id = var.api_gateway.id
   resource_id = aws_api_gateway_resource.api_resource.id
   http_method = aws_api_gateway_method.api_options_method.http_method
   status_code = 200
