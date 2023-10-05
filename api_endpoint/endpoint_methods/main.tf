@@ -6,6 +6,7 @@ resource "aws_lambda_function" "lambda_function" {
   package_type  = "Image"
   image_uri     = "${var.ecr_repo.repository_url}:${var.app_name}-${var.image_tag}"
   timeout       = var.timeout
+  memory_size   = var.memory_size
   image_config {
     command = var.command
   }
