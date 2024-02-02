@@ -9,6 +9,9 @@ resource "aws_lambda_function" "lambda_function" {
   image_config {
     command = var.command
   }
+  environment {
+    variables = var.lambda_environment_variables
+  }
 }
 
 resource "aws_lambda_permission" "lambda-permission" {

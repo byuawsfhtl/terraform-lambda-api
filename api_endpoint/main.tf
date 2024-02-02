@@ -25,11 +25,12 @@ module "endpoint_methods" {
 
   for_each = local.method_map
 
-  app_name        = var.app_name
-  ecr_repo        = var.ecr_repo
-  image_tag       = var.image_tag
-  lambda_role_arn = var.lambda_role_arn
-  path_part       = var.path_part
+  app_name                     = var.app_name
+  ecr_repo                     = var.ecr_repo
+  image_tag                    = var.image_tag
+  lambda_environment_variables = var.lambda_environment_variables
+  lambda_role_arn              = var.lambda_role_arn
+  path_part                    = var.path_part
 
   http_method = each.value.http_method
   command     = each.value.command
