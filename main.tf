@@ -70,11 +70,12 @@ module "api_endpoint" {
 
   for_each = local.endpoint_map
 
-  app_name        = var.app_name
-  url             = var.url
-  ecr_repo        = var.ecr_repo
-  image_tag       = var.image_tag
-  lambda_role_arn = aws_iam_role.lambda_role.arn
+  app_name                     = var.app_name
+  url                          = var.url
+  ecr_repo                     = var.ecr_repo
+  image_tag                    = var.image_tag
+  lambda_environment_variables = var.lambda_environment_variables
+  lambda_role_arn              = aws_iam_role.lambda_role.arn
 
   path_part          = each.value.path_part
   allowed_headers    = each.value.allowed_headers

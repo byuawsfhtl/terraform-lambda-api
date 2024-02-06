@@ -29,6 +29,10 @@ variable "image_tag" {
   type        = string
   description = "The image tag for the Docker image (the timestamp)."
 }
+variable "lambda_environment_variables" {
+  type        = map(string)
+  description = "The environment variables to set on the Lambda functions."
+}
 
 
 variable "lambda_endpoint_definitions" {

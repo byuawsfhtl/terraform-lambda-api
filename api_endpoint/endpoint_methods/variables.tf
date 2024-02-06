@@ -30,6 +30,10 @@ variable "command" {
   type        = list(string)
   description = "The lambda handlers for each method of the endpoint. The syntax is file_name.function_name"
 }
+variable "lambda_environment_variables" {
+  type        = map(string)
+  description = "The environment variables to set on the Lambda function."
+}
 variable "timeout" {
   type        = number
   description = "Amount of time your Lambda Function has to run in seconds."
