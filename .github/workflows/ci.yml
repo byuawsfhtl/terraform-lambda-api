@@ -22,7 +22,7 @@ jobs:
               terraform
   
         - name: Check Terraform Formatting
-          working-directory: "./terraform"
+          working-directory: "terraform-lambda-api"
           run: terraform fmt -check -recursive
 
     checkMeds:
