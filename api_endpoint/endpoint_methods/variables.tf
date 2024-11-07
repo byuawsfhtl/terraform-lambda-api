@@ -38,6 +38,11 @@ variable "timeout" {
   type        = number
   description = "Amount of time your Lambda Function has to run in seconds."
 }
+variable "reserved_concurrent_executions" {
+  type        = number
+  description = "The number of simultaneous executions to reserve for the function."
+  default     = -1
+}
 
 variable "api_gateway" {
   type = object({
