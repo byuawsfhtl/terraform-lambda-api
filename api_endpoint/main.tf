@@ -4,6 +4,7 @@ locals {
       http_method                    = def.http_method
       command                        = def.command
       timeout                        = def.timeout
+      memory_size                    = def.memory_size
       reserved_concurrent_executions = def.reserved_concurrent_executions
     }
   }
@@ -36,6 +37,7 @@ module "endpoint_methods" {
   http_method                    = each.value.http_method
   command                        = each.value.command
   timeout                        = each.value.timeout
+  memory_size                    = each.value.memory_size
   reserved_concurrent_executions = each.value.reserved_concurrent_executions
 
   api_gateway     = var.api_gateway

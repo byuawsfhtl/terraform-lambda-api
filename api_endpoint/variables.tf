@@ -41,6 +41,7 @@ variable "method_definitions" {
     command                        = list(string)
     timeout                        = optional(number)
     reserved_concurrent_executions = optional(number)
+    memory_size                    = optional(number)
   }))
   description = "The definitions for each method of the endpoint."
 }

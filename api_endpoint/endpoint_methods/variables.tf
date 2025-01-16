@@ -44,6 +44,11 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
+variable "memory_size" {
+  type        = number
+  description = "The amount of memory, in MB, your Lambda Function is given. Valid values are from 128 to 10,240. Default is 128. 1,769 is equivalent to 1 vCPU."
+}
+
 variable "api_gateway" {
   type = object({
     name             = string
