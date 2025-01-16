@@ -1,10 +1,11 @@
 locals {
   method_map = {
     for def in var.method_definitions : "${var.app_name}_${var.path_part}_${def.http_method}" => {
-      http_method = def.http_method
-      command     = def.command
-      timeout     = def.timeout
-      memory_size = def.memory_size
+      http_method                    = def.http_method
+      command                        = def.command
+      timeout                        = def.timeout
+      memory_size                    = def.memory_size
+      reserved_concurrent_executions = def.reserved_concurrent_executions
     }
   }
 
@@ -33,10 +34,11 @@ module "endpoint_methods" {
   lambda_role_arn              = var.lambda_role_arn
   path_part                    = var.path_part
 
-  http_method = each.value.http_method
-  command     = each.value.command
-  timeout     = each.value.timeout
-  memory_size = each.value.memory_size
+  http_method                    = each.value.http_method
+  command                        = each.value.command
+  timeout                        = each.value.timeout
+  memory_size                    = each.value.memory_size
+  reserved_concurrent_executions = each.value.reserved_concurrent_executions
 
   api_gateway     = var.api_gateway
   api_resource_id = aws_api_gateway_resource.api_resource.id

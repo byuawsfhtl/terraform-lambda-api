@@ -37,10 +37,11 @@ variable "allowed_headers" {
 }
 variable "method_definitions" {
   type = list(object({
-    http_method = string
-    command     = list(string)
-    timeout     = optional(number)
-    memory_size = optional(number)
+    http_method                    = string
+    command                        = list(string)
+    timeout                        = optional(number)
+    reserved_concurrent_executions = optional(number)
+    memory_size                    = optional(number)
   }))
   description = "The definitions for each method of the endpoint."
 }

@@ -1,12 +1,13 @@
 # ========== Lambda ==========
 # ----- Function -----
 resource "aws_lambda_function" "lambda_function" {
-  function_name = "${var.app_name}_${var.path_part}_${var.http_method}"
-  role          = var.lambda_role_arn
-  package_type  = "Image"
-  image_uri     = "${var.ecr_repo.repository_url}:${var.app_name}-${var.image_tag}"
-  timeout       = var.timeout
-  memory_size   = var.memory_size
+  function_name                  = "${var.app_name}_${var.path_part}_${var.http_method}"
+  role                           = var.lambda_role_arn
+  package_type                   = "Image"
+  image_uri                      = "${var.ecr_repo.repository_url}:${var.app_name}-${var.image_tag}"
+  timeout                        = var.timeout
+  memory_size                    = var.memory_size
+  reserved_concurrent_executions = var.reserved_concurrent_executions
   image_config {
     command = var.command
   }
