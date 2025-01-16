@@ -13,6 +13,11 @@ env:
 
 jobs:
     format:
+      name: Terraform Setup
+      uses: hashicorp/setup-terraform@v3.0.0
+      with:
+        terraform_version: ${{ env.tf_version }}
+
       name: Terraform Format
       runs-on: ubuntu-latest
       steps:
