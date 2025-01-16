@@ -13,20 +13,20 @@ env:
 
 jobs:
     format:
-      name: Terraform Setup
-      uses: hashicorp/setup-terraform@v3.0.0
-      with:
-        terraform_version: ${{ env.tf_version }}
+        name: Terraform Format
+        runs-on: ubuntu-latest
+        steps:
+          - name: Terraform Setup
+            uses: hashicorp/setup-terraform@v3.0.0
+            with:
+              terraform_version: ${{ env.tf_version }}
 
-      name: Terraform Format
-      runs-on: ubuntu-latest
-      steps:
-        - name: Check Terraform Formatting
-          run: terraform fmt -check -recursive
+          - name: Check Terraform Formatting
+            run: terraform fmt -check -recursive
 
     checkMeds:
-      name: Check Meds (merge every day)
-      runs-on: ubuntu-latest
-      steps:
-          - name: Check Meds
-            uses: byuawsfhtl/MedsAction@v1.0.0
+        name: Check Meds (merge every day)
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check Meds
+              uses: byuawsfhtl/MedsAction@v1.0.0
