@@ -88,7 +88,12 @@ resource "aws_api_gateway_deployment" "api_gateway_deployment" {
   depends_on = [module.api_endpoint]
 
   rest_api_id = aws_api_gateway_rest_api.api_gateway.id
-  stage_name  = "${var.app_name}-stage"
+}
+
+resource "aws_api_gateway_stage" "api_gateway_stage" {
+  rest_api_id   = aws_api_gateway_rest_api.api_gateway.id
+  deployment_id = aws_api_gateway_deployment.api_gateway_deployment.id
+  stage_name    = "${var.app_name}-stage"
 }
 
 # ========== Custom API URL ==========
@@ -129,7 +134,7 @@ resource "aws_route53_record" "api_gateway_subdomain_AAAA" {
 
 resource "aws_api_gateway_base_path_mapping" "api_gateway_base_path_mapping" {
   api_id      = aws_api_gateway_rest_api.api_gateway.id
-  stage_name  = aws_api_gateway_deployment.api_gateway_deployment.stage_name
+  stage_name  = aws_api_gateway_stage.api_gateway_stage.stage_name
   domain_name = aws_api_gateway_domain_name.api_gateway_domain_name.domain_name
 }
 
