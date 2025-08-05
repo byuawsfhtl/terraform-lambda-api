@@ -3,6 +3,7 @@ locals {
     for def in var.lambda_endpoint_definitions : "${var.app_name}_${def.path_part}" => {
       path_part          = def.path_part
       allowed_headers    = def.allowed_headers
+      allow_credentials  = def.allow_credentials
       method_definitions = def.method_definitions
     }
   }
