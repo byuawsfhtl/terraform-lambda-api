@@ -17,7 +17,7 @@ resource "aws_lambda_function" "lambda_function" {
 }
 
 resource "aws_lambda_permission" "lambda-permission" {
-  statement_id  = "Allow${var.api_gateway.name}APIGatewayInvoke"
+  statement_id  = "Allow${var.api_gateway.name}APIGatewayInvoke-${aws_lambda_function.lambda_function.function_name}"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_function.function_name
   principal     = "apigateway.amazonaws.com"
