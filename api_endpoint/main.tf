@@ -74,10 +74,10 @@ resource "aws_api_gateway_integration_response" "api_options_integration_respons
   status_code = aws_api_gateway_method_response.api_options_method_response.status_code
   response_parameters = merge(
     {
-      "method.response.header.Access-Control-Allow-Headers" = var.allowed_headers != null ? "'Content-Type,${var.allowed_headers}'" : "'Content-Type'",
-      "method.response.header.Access-Control-Allow-Methods" = "'${local.http_methods_string},OPTIONS'",
-      "method.response.header.Access-Control-Allow-Origin"  = "'https://${var.url}'",
-      "method.response.header.Access-Control-Max-Age" = 86400,
+      "method.response.header.Access-Control-Allow-Headers"     = var.allowed_headers != null ? "'Content-Type,${var.allowed_headers}'" : "'Content-Type'",
+      "method.response.header.Access-Control-Allow-Methods"     = "'${local.http_methods_string},OPTIONS'",
+      "method.response.header.Access-Control-Allow-Origin"      = "'https://${var.url}'",
+      "method.response.header.Access-Control-Max-Age"           = 86400,
       "method.response.header.Access-Control-Allow-Credentials" = var.allow_credentials ? true : false
     }
   )
@@ -93,10 +93,10 @@ resource "aws_api_gateway_method_response" "api_options_method_response" {
   }
   response_parameters = merge(
     {
-      "method.response.header.Access-Control-Allow-Headers" = true,
-      "method.response.header.Access-Control-Allow-Methods" = true,
-      "method.response.header.Access-Control-Allow-Origin"  = true,
-      "method.response.header.Access-Control-Max-Age" = 86400,
+      "method.response.header.Access-Control-Allow-Headers"     = true,
+      "method.response.header.Access-Control-Allow-Methods"     = true,
+      "method.response.header.Access-Control-Allow-Origin"      = true,
+      "method.response.header.Access-Control-Max-Age"           = 86400,
       "method.response.header.Access-Control-Allow-Credentials" = var.allow_credentials ? true : false
     }
   )

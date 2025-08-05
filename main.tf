@@ -79,6 +79,7 @@ module "api_endpoint" {
 
   path_part          = each.value.path_part
   allowed_headers    = each.value.allowed_headers
+  allow_credentials  = each.value.allow_credentials
   method_definitions = each.value.method_definitions
 
   api_gateway = aws_api_gateway_rest_api.api_gateway
