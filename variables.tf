@@ -37,8 +37,9 @@ variable "lambda_environment_variables" {
 
 variable "lambda_endpoint_definitions" {
   type = list(object({
-    path_part       = string
-    allowed_headers = optional(string)
+    path_part         = string
+    allowed_headers   = optional(string)
+    allow_credentials = optional(bool, false)
 
     method_definitions = list(object({
       http_method                    = string
