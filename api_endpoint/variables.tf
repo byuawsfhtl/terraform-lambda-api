@@ -35,6 +35,12 @@ variable "allowed_headers" {
   type        = string
   description = "The custom headers the endpoint should allow. Provided as a string with each header key separated by a comma."
 }
+
+variable "allow_credentials" {
+  type        = bool
+  default     = false
+  description = "Whether to include Access-Control-Allow-Credentials header in the OPTIONS response."
+}
 variable "method_definitions" {
   type = list(object({
     http_method                    = string
