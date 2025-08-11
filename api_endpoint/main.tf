@@ -101,7 +101,7 @@ resource "aws_api_gateway_method_response" "api_options_method_response" {
       "method.response.header.Access-Control-Max-Age"       = true
     },
     var.allow_credentials ? {
-      "method.response.header.Access-Control-Allow-Credentials" = true
+      "method.response.header.Access-Control-Allow-Credentials" = "'true'"
     } : {}
   )
 }
