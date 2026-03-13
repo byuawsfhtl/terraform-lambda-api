@@ -41,7 +41,7 @@ resource "aws_api_gateway_integration" "api_integration" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.lambda_function.invoke_arn
-  timeout_milliseconds    = var.timeout * 1000
+  timeout_milliseconds    = var.timeout <= 300 ? var.timeout * 1000 : 300000
 }
 
 # ========== Cloudwatch ==========
