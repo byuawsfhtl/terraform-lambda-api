@@ -52,6 +52,12 @@ resource "aws_api_gateway_method" "api_options_method" {
   authorization = "NONE"
 }
 
+# Fallback template used when Content-Type is missing (e.g. browser OPTIONS preflight).
+# Without this, OPTIONS can fail with 403 on some paths depending on request handling.
+locals {
+  options_mock_status = jsonencode({ statusCode = 200 })
+}
+
 resource "aws_api_gateway_integration" "api_options_integration" {
   rest_api_id = var.api_gateway.id
   resource_id = aws_api_gateway_resource.api_resource.id
@@ -59,11 +65,8 @@ resource "aws_api_gateway_integration" "api_options_integration" {
   type        = "MOCK"
 
   request_templates = {
-    "application/json" = jsonencode(
-      {
-        statusCode = 200
-      }
-    )
+    "application/json"                 = local.options_mock_status
+    "application/x-www-form-urlencoded" = local.options_mock_status
   }
 }
 
